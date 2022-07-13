@@ -25,11 +25,41 @@ See docs/process.md for more on how version tagging works.
   wasm/JS interface.  These function are no longer exported in all cases.  If
   your code directly calls these functions from JS, you can add them to
   `-sEXPORTED_RUNTIME_METHODS`.
+- The `LEGACY_RUNTIME` setting is no longer enabled by default.  If you use any
+  of these legacy runtime functions (except for library code with explict
+  dependencies) then you would need set `LEGACY_RUNTIME` on the command line or
+  add the ones you need to `DEFAULT_LIBRARY_FUNCS_TO_INCLUDE`:
+   - addFunction
+   - removeFunction
+   - allocate
+   - AsciiToString
+   - stringToAscii
+   - UTF16ToString
+   - stringToUTF16
+   - lengthBytesUTF16
+   - UTF32ToString
+   - stringToUTF32
+   - lengthBytesUTF32
+   - allocateUTF8
+   - allocateUTF8OnStack
+   - writeStringToMemory
+   - writeArrayToMemory
+   - writeAsciiToMemory
+   - intArrayFromString
+   - intArrayToString
+   - warnOnce
+   - ccall
+   - cwrap
+   - getTempRet0
+   - setTempRet0
 
 3.1.19 - 08/17/2022
 -------------------
 - Old method of metadata extraction via wasm-emscripten-finalize removed
   in favor of local python code. (#16529)
+  Although this is technically a breaking change for those who call these
+  functions, there are assertion in debug builds that catch uses of these and
+  direct towards how to explictly enable them.
 
 3.1.18 - 08/01/2022
 -------------------
